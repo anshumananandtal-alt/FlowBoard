@@ -1,12 +1,11 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { vi } from 'vitest'
 import { AddTaskForm } from '../components/AddTaskForm'
 
 test('renders Add Task modal and saves a new task', async () => {
-  const handleAdd = vi.fn()
-  const handleClose = vi.fn()
+  const handleAdd = jest.fn()
+  const handleClose = jest.fn()
   const user = userEvent.setup()
 
   render(<AddTaskForm open={true} onAdd={handleAdd} onClose={handleClose} />)
@@ -19,8 +18,8 @@ test('renders Add Task modal and saves a new task', async () => {
 })
 
 test('cancel closes the modal without adding a task', async () => {
-  const handleAdd = vi.fn()
-  const handleClose = vi.fn()
+  const handleAdd = jest.fn()
+  const handleClose = jest.fn()
   const user = userEvent.setup()
 
   render(<AddTaskForm open={true} onAdd={handleAdd} onClose={handleClose} />)

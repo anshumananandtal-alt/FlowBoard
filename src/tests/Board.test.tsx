@@ -1,6 +1,5 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { vi } from 'vitest'
 import { Board } from '../components/Board'
 import type { Task } from '../models/task'
 
@@ -11,7 +10,7 @@ const sampleTasks: Task[] = [
 ]
 
 test('Board renders all columns and task titles', () => {
-  render(<Board tasks={sampleTasks} onTaskMove={vi.fn()} onTaskDelete={vi.fn()} />)
+  render(<Board tasks={sampleTasks} onTaskMove={jest.fn()} onTaskDelete={jest.fn()} />)
 
   expect(screen.getByText(/todo/i)).toBeInTheDocument()
   expect(screen.getByText(/in progress/i)).toBeInTheDocument()
