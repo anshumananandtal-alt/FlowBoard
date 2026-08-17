@@ -1,32 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
 import Typography from '@mui/material/Typography'
 import './App.css'
 import type { Status, Task } from './models/task'
 import { STORAGE_KEY } from './utils/storage'
 import { Board, AddTaskForm } from './components'
-
-const loadTasks = (): Task[] => {
-  if (typeof window === 'undefined') {
-    return []
-  }
-
-  const raw = localStorage.getItem(STORAGE_KEY)
-  if (!raw) {
-    return []
-  }
-
-  try {
-    const parsed = JSON.parse(raw)
-    return Array.isArray(parsed) ? parsed : []
-  } catch {
-    return []
-  }
-}
-
-const saveTasks = (tasks: Task[]) => {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
-}
+import { useLocalStorage } from './hooks/useLocalStorage'
 
 const createTask = (title: string, status: Status): Task => ({
   id: `task-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
@@ -35,12 +14,8 @@ const createTask = (title: string, status: Status): Task => ({
 })
 
 function App() {
-  const [tasks, setTasks] = useState<Task[]>(() => loadTasks())
+  const [tasks, setTasks] = useLocalStorage<Task[]>(STORAGE_KEY, [])
   const [isModalOpen, setIsModalOpen] = useState(false)
-
-  useEffect(() => {
-    saveTasks(tasks)
-  }, [tasks])
 
   const addTask = (title: string, status: Status = 'todo') => {
     setTasks((currentTasks) => [...currentTasks, createTask(title, status)])
